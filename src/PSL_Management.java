@@ -12,10 +12,11 @@ public class PSL_Management {
 
     public static void main (String[] args){
         try {
-            File file = new File("d:\\psl.txt");
+            File file = new File("psl.txt");
 
             if (!file.exists()) {
-                FileOutputStream psl = new FileOutputStream("d:\\psl.txt");
+
+                FileOutputStream psl = new FileOutputStream("psl.txt");
                 PrintStream ps = new PrintStream(psl);
                 ps.printf("%-6s%-8s%-6s%-6s%-6s%-7s%n", "Team", "Played", "Won", "Lost", "NR", "Points");
                 ps.printf("%-6s%-8d%-6d%-6d%-6d%-7d%n", "PZ", 0, 0, 0, 0, 0);
@@ -32,6 +33,7 @@ public class PSL_Management {
                 header = reader.nextLine();
 
             while (reader.hasNextLine()){
+
                 String line = reader.nextLine();
                 String [] parts = line.split("\\s+");
                 teams.add(parts[0]);
@@ -49,6 +51,7 @@ public class PSL_Management {
             System.out.println("Error loading file");
         }
     }
+
     public static void menu(){
         while (true){
             try {
@@ -63,6 +66,7 @@ public class PSL_Management {
                 System.out.print("Enter your choice: ");
                 int choice = input.nextInt();
                 input.nextLine();
+
                 switch (choice){
                     case 1:
                         submit_result();
@@ -89,9 +93,9 @@ public class PSL_Management {
                 System.out.println("Invalid input. Try again");
                 input.nextLine();
             }
-
         }
     }
+
     public static void submit_result() {
         try {
             String team1  = "";
@@ -99,10 +103,14 @@ public class PSL_Management {
             int index_Team2 = -1;
             boolean found_Team1 = false;
             boolean found_Team2 = false;
+
             while (true) {
+
                 System.out.print("Enter team 1: ");
                 team1 = input.nextLine();
+
                 for (int i = 0; i < teams.size(); i++){
+
                     if (team1.equalsIgnoreCase(teams.get(i))){
                         index_Team1 = i;
                         found_Team1 = true;
@@ -117,12 +125,14 @@ public class PSL_Management {
             }
 
             while (true) {
+
                 System.out.print("Enter team 2: ");
                 String team2 = input.nextLine();
                 if (team2.equals(team1))
                     System.out.println("Both teams cannot be same");
                 else {
                     for (int i = 0; i < teams.size(); i++) {
+
                         if (team2.equalsIgnoreCase(teams.get(i))) {
                             index_Team2 = i;
                             found_Team2 = true;
@@ -143,6 +153,7 @@ public class PSL_Management {
             System.out.println("3. No result/Tie");
             System.out.print("Enter your choice: ");
             int result  = input.nextInt();
+
             switch (result){
                 case 1:
                     wins.set(index_Team1, wins.get(index_Team1)+1);
@@ -170,6 +181,7 @@ public class PSL_Management {
             input.nextLine();
         }
     }
+
     public static void display_status() {
         System.out.println("-------------- POINTS TABLE -----------");
         try {
@@ -208,10 +220,12 @@ public class PSL_Management {
 
         sort_Table();
     }
+
     public static void remove_Team(){
         System.out.print("Enter team name: ");
         String team = input.nextLine();
         boolean found = false;
+
         for (int i = teams.size() - 1 ;i >= 0; i--){
             if (team.equalsIgnoreCase(teams.get(i))){
                 teams.remove(i);
@@ -224,16 +238,18 @@ public class PSL_Management {
                 break;
             }
         }
-
         sort_Table();
+
         if (!found){
             System.out.println("Team not found");
         }
     }
+
     public static void search_Team(){
         System.out.print("Enter team name: ");
         String team = input.nextLine();
         boolean found  = false;
+
         for (int i=0; i< teams.size();i++){
             if (team.equalsIgnoreCase(teams.get(i))){
                 System.out.println("Team: " + teams.get(i));
@@ -251,7 +267,9 @@ public class PSL_Management {
     }
     public static void sort_Table(){
         for (int i = 0; i < teams.size() - 1; i++){
+
             for (int j = i + 1; j < teams.size(); j++){
+
                 if (points.get(i) < points.get(j) ||
                         (points.get(i).equals(points.get(j)) && wins.get(i) < wins.get(j)))
                 {
@@ -283,13 +301,14 @@ public class PSL_Management {
         }
         save_result();
     }
+
     public static void save_result(){
         try {
-            File file = new File("d:\\psl.txt");
+            File file = new File("psl.txt");
             PrintStream ps = new PrintStream(file);
             ps.printf("%s%n",header);
 
-            for (int i=0; i< teams.size();i++){
+            for (int i = 0; i < teams.size(); i++){
                 ps.printf("%-6s",teams.get(i).toUpperCase());
                 ps.printf("%-8d",played.get(i));
                 ps.printf("%-6d",wins.get(i));
